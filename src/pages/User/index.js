@@ -1,10 +1,39 @@
-import React from 'react';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { View } from 'react-native';
+import api from '../../services/api';
+export default class User extends Component {
 
-export default function User(props) {
+  static navigationOptions = ({ navigation }) => ({
+    title: navigation.getParam('user').name,
+  });
 
-  console.tron.log(props.navigation.getParam('user'));
-  return (
-    <View />
-  );
+  static propTypes = {
+    navigation: PropTypes.shape({
+      getParam: PropTypes.func,
+    }).isRequired,
+  };
+
+  state = {
+    stars: [],
+  };
+
+  async componentDidMount() {
+    const { navigation } = this.props;
+    const user = navigation.getParam('user');
+
+    const response = await api.get(`/users/${user.login}/starred`);
+
+    this.setState({ stars: response.data });
+  }
+
+  render(){
+    const { stars } = this.state;
+    console.tron.log(stars);
+    //const { navigation } = this.props;
+
+    return (
+      <View />
+    );
+  }
 }
