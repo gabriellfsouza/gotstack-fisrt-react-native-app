@@ -20,7 +20,7 @@ import {
 
 export default class Main extends Component {
   static navigationOptions = {
-    title: 'Users',
+    title: 'Usuários',
   };
 
   static propTypes = {
@@ -87,7 +87,7 @@ export default class Main extends Component {
           <Input
             autoCorrect={false}
             autoCapitalize="none"
-            placeholder="Adicionar usuário"
+            placeholder="Adicionar usuário (teste)"
             value={newUser}
             onChangeText={text => this.setState({ newUser: text })}
             returnKeyType="send"
