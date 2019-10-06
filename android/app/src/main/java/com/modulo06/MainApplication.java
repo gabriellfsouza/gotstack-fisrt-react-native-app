@@ -7,11 +7,11 @@ import com.facebook.react.PackageList;
 import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
 import com.facebook.react.bridge.JavaScriptExecutorFactory;
 import com.facebook.react.ReactApplication;
+import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.microsoft.codepush.react.CodePush;
 import com.geektime.rnonesignalandroid.ReactNativeOneSignalPackage;
-import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
@@ -22,13 +22,13 @@ public class MainApplication extends Application implements ReactApplication {
 
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
     @Override
-    protected String getJSBundleFile(){
-      return CodePush.getJSBundleFile();
+    public boolean getUseDeveloperSupport() {
+      return BuildConfig.DEBUG;
     }
 
     @Override
-    public boolean getUseDeveloperSupport() {
-      return BuildConfig.DEBUG;
+    protected String getJSBundleFile() {
+        return CodePush.getJSBundleFile();
     }
 
     @Override
@@ -44,7 +44,7 @@ public class MainApplication extends Application implements ReactApplication {
           reactPackage = new CodePush(BuildConfig.CODEPUSH_KEY,getApplicationContext(),BuildConfig.DEBUG);
         }
       }
-      //packages.add(new CodePush(BuildConfig.CODEPUSH_KEY,getApplicationContext(),BuildConfig.DEBUG));
+      // packages.add(new CodePush(BuildConfig.CODEPUSH_KEY,getApplicationContext(),BuildConfig.DEBUG));
       return packages;
     }
 
