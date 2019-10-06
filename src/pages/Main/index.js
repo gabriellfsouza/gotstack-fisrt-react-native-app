@@ -20,7 +20,7 @@ import {
 
 export default class Main extends Component {
   static navigationOptions = {
-    title: 'Usuários',
+    title: 'Users',
   };
 
   static propTypes = {
@@ -43,19 +43,19 @@ export default class Main extends Component {
     }
   }
 
-  componentDidUpdate(_, prevState){
+  componentDidUpdate(_, prevState) {
     const { users } = this.state;
 
-    if(prevState !== users){
+    if (prevState !== users) {
       AsyncStorage.setItem('users', JSON.stringify(users));
     }
   }
 
   handleNavigate = user => {
     const { navigation } = this.props;
-    //console.tron.log(user);
+    // console.tron.log(user);
     navigation.navigate('User', { user });
-  }
+  };
 
   handleAddUser = async () => {
     const { users, newUser } = this.state;
@@ -77,46 +77,47 @@ export default class Main extends Component {
       loading: false,
     });
     Keyboard.dismiss();
-  }
+  };
 
-  render(){
+  render() {
     const { users, newUser, loading } = this.state;
     return (
-    <Container>
-      <Form>
-        <Input
-          autoCorrect={false}
-          autoCapitalize="none"
-          placeholder="Adicionar usuário"
-          value={newUser}
-          onChangeText={text => this.setState({ newUser: text })}
-          returnKeyType="send"
-          onSubmitEditing={this.handleAddUser}
+      <Container>
+        <Form>
+          <Input
+            autoCorrect={false}
+            autoCapitalize="none"
+            placeholder="Adicionar usuário"
+            value={newUser}
+            onChangeText={text => this.setState({ newUser: text })}
+            returnKeyType="send"
+            onSubmitEditing={this.handleAddUser}
+          />
+          <SubmitButton loading={loading} onPress={this.handleAddUser}>
+            {loading ? (
+              <ActivityIndicator color="#FFF" />
+            ) : (
+              <Icon name="add" size={20} color="#FFF" />
+            )}
+          </SubmitButton>
+        </Form>
+
+        <List
+          data={users}
+          keyExtractor={user => user.login}
+          renderItem={({ item }) => (
+            <User>
+              <Avatar source={{ uri: item.avatar }} />
+              <Name>{item.name}</Name>
+              <Bio>{item.bio}</Bio>
+
+              <ProfileButton onPress={() => this.handleNavigate(item)}>
+                <ProfileButtonText>Ver perfil</ProfileButtonText>
+              </ProfileButton>
+            </User>
+          )}
         />
-        <SubmitButton loading={loading} onPress={this.handleAddUser}>
-        { loading
-          ? (<ActivityIndicator color="#FFF" />)
-          : (<Icon name="add" size={20} color="#FFF" />)}
-        </SubmitButton>
-      </Form>
-
-      <List
-        data={users}
-        keyExtractor={user => user.login}
-        renderItem={({ item }) => (
-          <User>
-            <Avatar source={{uri: item.avatar}} />
-            <Name>{item.name}</Name>
-            <Bio>{item.bio}</Bio>
-
-            <ProfileButton onPress={() => this.handleNavigate(item)} >
-              <ProfileButtonText>Ver perfil</ProfileButtonText>
-            </ProfileButton>
-          </User>
-        )}
-      />
-    </Container>
+      </Container>
     );
   }
 }
-
